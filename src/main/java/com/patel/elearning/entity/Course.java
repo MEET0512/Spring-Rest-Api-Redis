@@ -1,5 +1,6 @@
 package com.patel.elearning.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Course {
+public class Course implements Serializable {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

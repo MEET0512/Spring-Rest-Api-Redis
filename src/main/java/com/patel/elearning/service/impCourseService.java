@@ -2,6 +2,7 @@ package com.patel.elearning.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.patel.elearning.entity.Course;
@@ -17,11 +18,14 @@ public class impCourseService implements courseService {
 
 	@Override
 	public List<Course> findAllCourse() {
+		System.out.print("Featchin from database");
 		return courseRepo.findAll();
 	}
 
 	@Override
+	@Cacheable("courses")
 	public Course findCourseById(Long id) {
+		System.out.print("Featchin from database");
 		return courseRepo.findById(id).orElseThrow(() -> new RuntimeException("Course not found"));
 	}
 
