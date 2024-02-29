@@ -2,6 +2,7 @@ package com.patel.elearning.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class impCourseService implements courseService {
 	
+	
 	private final CourseRepository courseRepo;
 
 	@Override
+	@Cacheable("courses")
 	public List<Course> findAllCourse() {
 		System.out.print("Featchin from database");
 		return courseRepo.findAll();
@@ -30,11 +33,13 @@ public class impCourseService implements courseService {
 	}
 
 	@Override
+	@CacheEvict("courses")
 	public Course addCourse(Course course) {
 		 return courseRepo.save(course);
 	}
 
 	@Override
+	@CacheEvict(value = "courses")
 	public Course updateCourse(Long id, Course courseDetails) {
 		Course course = courseRepo.findById(id).orElseThrow(() -> new RuntimeException("Course not found"));
         course.setName(courseDetails.getName());
@@ -42,6 +47,7 @@ public class impCourseService implements courseService {
 	}
 
 	@Override
+	@CacheEvict(value = "courses")
 	public void deleteCourse(Long id) {
 		Course course = courseRepo.findById(id).orElseThrow(() -> new RuntimeException("Course not found"));
         courseRepo.delete(course);

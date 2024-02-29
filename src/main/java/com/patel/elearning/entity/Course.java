@@ -23,6 +23,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Course implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;

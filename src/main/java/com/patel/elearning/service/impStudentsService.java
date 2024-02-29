@@ -4,6 +4,8 @@ import java.util.List;
 
 import java.util.Optional;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.patel.elearning.entity.Course;
@@ -22,21 +24,25 @@ public class impStudentsService implements studentService {
 	private final CourseRepository courseRepo;
 	
 	@Override
+	@Cacheable("students")
 	public List<Student> getAllStudents() {
 		return studentRepo.findAll();
 	}
 
 	@Override
+	@Cacheable("students")
 	public Optional<Student> getStudentById(Long id) {
 		return studentRepo.findById(id);
 	}
 
 	@Override
+	@CacheEvict(value = "students", allEntries = true)
 	public Student addStudent(Student student) {
 		return studentRepo.save(student);
 	}
 
 	@Override
+	@CacheEvict(value = "students", key = "#id")
 	public Student updateStudent(Long id, Student studentDetails) {
 		Optional<Student> studentOptional = studentRepo.findById(id);
 
@@ -51,6 +57,7 @@ public class impStudentsService implements studentService {
 	}
 
 	@Override
+	@CacheEvict(value = "students", key = "#id")
 	public String deleteStudent(Long id) {
 		studentRepo.findById(id)
         .map(student -> {
@@ -63,6 +70,7 @@ public class impStudentsService implements studentService {
 	}
 
 	@Override
+	@CacheEvict(value = "students", key = "#id")
 	public Student addCourse(Long studentId, Long courseId) {
 		Optional<Student> optionalStudent = studentRepo.findById(studentId);
 		Optional<Course> optionalCourse = courseRepo.findById(courseId);
@@ -77,6 +85,7 @@ public class impStudentsService implements studentService {
 	}
 
 	@Override
+	@Cacheable("students")
 	public List<Student> getCourseStudents(Long courseId) {
 		
 		return studentRepo.findByCourseId(courseId);
